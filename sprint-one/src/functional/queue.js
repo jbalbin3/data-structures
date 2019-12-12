@@ -19,7 +19,7 @@ var Queue = function() {
     inkey++;
   };
 
-  someInstance.dequeue = function() {
+  someInstance.enqueue = function(value) {
     if(outkey === undefined) {
       return;
     }
@@ -31,7 +31,7 @@ var Queue = function() {
     return returnResult;
   };
 
-  someInstance.size = function() {
+  someInstance.enqueue = function(value) {
     return inkey - outkey;
   };
 
