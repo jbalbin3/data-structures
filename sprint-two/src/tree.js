@@ -11,7 +11,7 @@ var Tree = function(value) {
 
 var treeMethods = {};
 
-treeMethods.addChild = function(value) {
+treeMethods.addChild = function(value) { // O(1) constant time complexity
   var child = {
     value: value,
     children: []
@@ -20,7 +20,7 @@ treeMethods.addChild = function(value) {
   this.children.push(child);
 };
 
-treeMethods.contains = function(target) {
+treeMethods.contains = function(target) { // O(n) linear time complexity
   var isFound = false;
   var checkTree = function(node) {
     if(!isFound) {
