@@ -47,7 +47,7 @@ binaryTreeMethods.contains = function(value) {
         if(node.right.value === value) {
           return true;
         }
-        findNode(node.right);
+        return findNode(node.right);
       }
     } else {
       if (node.left === null) {
@@ -56,16 +56,26 @@ binaryTreeMethods.contains = function(value) {
         if (node.left.value === value) {
           return true;
         }
-        findNode(node.left);
+        return findNode(node.left);
       }
     }
-    return false;
   };
   return findNode(this);
 };
 
-binaryTreeMethods.depthFirstLog = function() {
+binaryTreeMethods.depthFirstLog = function(callback) {
+  if(!callback) { callback = function(e) { return e; }; }
+  var findNode = function(node) {
+    callback(node.value);
+    if (node.left !== null) {
+      findNode(node.left);
+    }
+    if(node.right !== null) {
+      findNode(node.right);
+    }
 
+  };
+  findNode(this);
 };
 /*
 var BinarySearchTree = function(root) {
