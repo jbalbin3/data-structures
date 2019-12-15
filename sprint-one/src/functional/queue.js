@@ -8,24 +8,14 @@ var Queue = function() {
   var outkey = 0;
   // Implement the methods below
 
-  // storage = {},
-
   someInstance.enqueue = function(value) {
-    if(inkey === undefined) {
-      inkey = 0;
-      outkey = 0;
-    }
-    storage[inkey] = value;
-    inkey++;
+    storage[inkey++] = value;
   };
 
   someInstance.dequeue = function(value) {
-    if(outkey === undefined) {
-      return;
-    }
     var returnResult = storage[outkey];
-    delete storage[outkey];
     if(outkey < inkey) {
+      delete storage[outkey];
       outkey++;
     }
     return returnResult;

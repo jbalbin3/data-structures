@@ -3,9 +3,9 @@ var Queue = function() {
   // but try not not reference your old code in writing the new style.
   var someInstance = Object.create(queueMethods);
 
-  someInstance.storage = {};
-  someInstance.inkey = 0;
-  someInstance.outkey = 0;
+  someInstance._storage = {};
+  someInstance._inkey = 0;
+  someInstance._outkey = 0;
 
   return someInstance;
 };
@@ -13,26 +13,18 @@ var Queue = function() {
 var queueMethods = {};
 
 queueMethods.enqueue = function(value) {
-  if (this.inkey === undefined) {
-    this.inkey = 0;
-    this.outkey = 0;
-  }
-  this.storage[this.inkey] = value;
-  this.inkey++;
+  this._storage[this._inkey++] = value;
 };
 
 queueMethods.dequeue = function() {
-  if (this.outkey === undefined) {
-    return;
-  }
-  var returnResult = this.storage[this.outkey];
-  delete this.storage[this.outkey];
-  if (this.outkey < this.inkey) {
-    this.outkey++;
+  var returnResult = this._storage[this._outkey];
+  if (this._outkey < this._inkey) {
+    delete this._storage[this._outkey];
+    this._outkey++;
   }
   return returnResult;
 };
 
 queueMethods.size = function() {
-  return this.inkey - this.outkey;
+  return this._inkey - this._outkey;
 };

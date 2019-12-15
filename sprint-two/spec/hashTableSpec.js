@@ -1,6 +1,6 @@
 describe('hashTable', function() {
   var hashTable;
-  var people = [['a', 'Tyler'], ['b', 'Harrison'], ['c', 'Doob'], ['d', 'Sunshine'], ['e', 'Resig'], ['f', 'Eich'], ['g', 'Turing']];
+  var people = [['Steven', 'Tyler'], ['George', 'Harrison'], ['Mr.', 'Doob'], ['Dr.', 'Sunshine'], ['John', 'Resig'], ['Brendan', 'Eich'], ['Alan', 'Turing']];
 
 
   beforeEach(function() {
@@ -32,7 +32,7 @@ describe('hashTable', function() {
   it('should not contain values that were removed', function() {
     hashTable.insert('Steven', 'Tyler');
     hashTable.remove('Steven');
-    expect(hashTable.retrieve('Steven')).to.equal(undefined);
+    expect(hashTable.retrieve('Steven')).to.equal(null);
   });
 
   it('should handle hash function collisions', function() {
@@ -66,11 +66,11 @@ describe('hashTable', function() {
       expect(hashTable.retrieve(firstName)).to.equal(lastName);
     });
     expect(hashTable._limit).to.equal(16);
-    hashTable.remove('a');
-    hashTable.remove('b');
-    hashTable.remove('c');
-    hashTable.remove('d');
-    hashTable.remove('e');
+    hashTable.remove('George');
+    hashTable.remove('Dr.');
+    hashTable.remove('Steven');
+    hashTable.remove('John');
+    hashTable.remove('Mr.');
     expect(hashTable._limit).to.equal(8);
   });
 });
