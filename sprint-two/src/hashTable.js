@@ -89,7 +89,7 @@ HashTable.prototype.checkAndResize = function() {
   }
   if (ratio < 0.25 && this._limit > 8) { // halve
     var temp = [];
-    this._storage.each(function(bucket){
+    this._storage.each(function(bucket) {
       if (bucket !== undefined) {
         temp = temp.concat(bucket);
       }

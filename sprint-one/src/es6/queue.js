@@ -14,7 +14,7 @@ class Queue {
     var returnResult = this._storage[this._outkey];
     if (this._outkey < this._inkey) {
       delete this._storage[this._outkey];
-      this._outkey++;_
+      this._outkey++;
     }
     return returnResult;
   }

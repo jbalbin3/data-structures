@@ -14,7 +14,7 @@ var Queue = function() {
 
   someInstance.dequeue = function(value) {
     var returnResult = storage[outkey];
-    if(outkey < inkey) {
+    if (outkey < inkey) {
       delete storage[outkey];
       outkey++;
     }

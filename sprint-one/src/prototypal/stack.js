@@ -14,7 +14,7 @@ stackMethods.push = function(val) {
 };
 
 stackMethods.pop = function() {
-  if(this._key > 0) {
+  if (this._key > 0) {
     var returnVal = this._storage[this._key];
     delete this._storage[this._key];
     this._key--;
