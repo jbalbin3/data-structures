@@ -1,4 +1,4 @@
-var BinarySearchTree = function(value) {
+var BinarySearchTree = function (value) {
   var btree = Object.create(binaryTreeMethods);
 
   btree.value = value;
@@ -10,10 +10,10 @@ var BinarySearchTree = function(value) {
 
 var binaryTreeMethods = {};
 
-binaryTreeMethods.insert = function(value) {
-  var setNode = function(node) {
-    if(value > node.value) {
-      if(node.right === null) {
+binaryTreeMethods.insert = function (value) {
+  var setNode = function (node) {
+    if (value > node.value) {
+      if (node.right === null) {
         node.right = {
           value: value,
           left: null,
@@ -23,7 +23,7 @@ binaryTreeMethods.insert = function(value) {
         setNode(node.right);
       }
     } else {
-      if(node.left === null) {
+      if (node.left === null) {
         node.left = {
           value: value,
           left: null,
@@ -37,14 +37,14 @@ binaryTreeMethods.insert = function(value) {
   setNode(this);
 };
 
-binaryTreeMethods.contains = function(value) {
-  var findNode = function(node) {
-    if(node.value === value) { return true; }
-    if(value > node.value) {
-      if(node.right === null) {
+binaryTreeMethods.contains = function (value) {
+  var findNode = function (node) {
+    if (node.value === value) { return true; }
+    if (value > node.value) {
+      if (node.right === null) {
         return false;
       } else {
-        if(node.right.value === value) {
+        if (node.right.value === value) {
           return true;
         }
         return findNode(node.right);
@@ -63,21 +63,21 @@ binaryTreeMethods.contains = function(value) {
   return findNode(this);
 };
 
-binaryTreeMethods.depthFirstLog = function(callback) {
-  if(!callback) { callback = function(e) { return e; }; }
-  var findNode = function(node) {
+binaryTreeMethods.depthFirstLog = function (callback) {
+  if (!callback) { callback = function (e) { return e; }; }
+  var findNode = function (node) {
     callback(node.value);
     if (node.left !== null) {
       findNode(node.left);
     }
-    if(node.right !== null) {
+    if (node.right !== null) {
       findNode(node.right);
     }
   };
   findNode(this);
 };
 
-binaryTreeMethods.breadthFirstLog = function(callback) {
+binaryTreeMethods.breadthFirstLog2 = function (callback) { // recursive version
   // jumpRun func(node)
   // store node.value (or just run the callback)
   // check left if exists
@@ -87,21 +87,34 @@ binaryTreeMethods.breadthFirstLog = function(callback) {
   // shift jumpArray = new node   (e = node)
   // call jumpStore func with input of new node
   // jumpRun(this)
-
-  var jumpArr = [];
-  var jumpRun = function(node) {
-    callback(node.value);
-    if(node.left !== null) {
-      jumpArr.push(node.left);
+  var q = [];
+  var runQ = function (n) {
+    callback(n.value);
+    if (n.left) {
+      q.push(n.left);
     }
-    if(node.right !== null) {
-      jumpArr.push(node.right);
+    if (n.right) {
+      q.push(n.right);
     }
-    if(jumpArr.length) {
-      jumpRun(jumpArr.shift());
+    if (q.length) {
+      runQ(q.shift());
     }
   };
-  jumpRun(this);
+  runQ(this);
+};
+
+binaryTreeMethods.breadthFirstLog = function (callback) { // non-recursive version
+  var q = [this];
+  do {
+    var c = q.shift();
+    callback(c.value);
+    if (c.left) {
+      q.push(c.left);
+    }
+    if (c.right) {
+      q.push(c.right);
+    }
+  } while(q.length);
 };
 
 /*
