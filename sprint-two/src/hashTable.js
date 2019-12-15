@@ -9,10 +9,9 @@ var HashTable = function() {
 HashTable.prototype.insert = function(k, v) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   var bucket = this._storage.get(index);
-  if (!bucket) { // initialize
+  if (!bucket) { // initial tuple
     this._storage.set(index, [[k, v]]);
-    this._count++;
-    this.checkAndResize();
+    this._addCount(1);
   } else { // collision
     for (var i = 0; i < bucket.length; i++) {
       if (k === bucket[i][0]) {
@@ -22,9 +21,8 @@ HashTable.prototype.insert = function(k, v) {
       }
     }
     bucket.push([k, v]);
-    this._count++;
     this._storage.set(index, bucket);
-    this.checkAndResize();
+    this._addCount(1);
   }
 };
 
@@ -52,53 +50,53 @@ HashTable.prototype.remove = function(k) {
     var tuple = bucket[i];
     if (tuple[0] === k) {
       bucket.splice(i, 1);
-      this._count--;
       this._storage.set(index, bucket);
-      this.checkAndResize();
+      this._addCount(-1);
       return tuple[1];
     }
   }
   return null;
 };
 
-HashTable.prototype.insertResize = function(k, v) {
+HashTable.prototype._addCount = function(increment) {
+  this._count += increment;
+  var ratio = this._count / this._limit;
+  if (increment === 1) {
+    if (ratio > 0.75) { // check double expression
+      this._Resize(this._limit * 2);
+    }
+  } else {
+    if (ratio < 0.25 && this._limit > 8) { // check halve expression
+      this._Resize(this._limit / 2);
+    }
+  }
+};
+
+HashTable.prototype._Resize = function(size) { // O(n) time complexity
+  var temp = this._storage; // use temp to look at current storage
+  this._limit = size;
+  this._storage = LimitedArray(this._limit); // initialize storage to new size limit
+
+  temp.each(function(bucket) { // load temp back into storage
+    if (bucket) {
+      for (var tuple of bucket) { // code review: is it better to use a traditional for loop here?
+        this._ResizeInsert(tuple[0], tuple[1]);
+      }
+    }
+  }.bind(this));
+};
+
+/* slimmer insert
+ * no addCount(1), resize check, or bucket iteration
+ */
+HashTable.prototype._ResizeInsert = function(k, v) {
   var index = getIndexBelowMaxForKey(k, this._limit);
   var bucket = this._storage.get(index);
-  if (bucket === undefined) { // initialize
+  if (!bucket) { // initial tuple
     this._storage.set(index, [[k, v]]);
   } else { // collision
     bucket.push([k, v]);
     this._storage.set(index, bucket);
-  }
-};
-
-HashTable.prototype.checkAndResize = function() {
-  var ratio = this._count / this._limit;
-  if (ratio > 0.75) { // double
-    var temp = [];
-    this._storage.each(function(bucket) {
-      if (bucket !== undefined) {
-        temp = temp.concat(bucket);
-      }
-    });
-    this._limit *= 2;
-    this._storage = LimitedArray(this._limit);
-    for (var i = 0; i < temp.length; i++) {
-      this.insertResize(temp[i][0], temp[i][1]);
-    }
-  }
-  if (ratio < 0.25 && this._limit > 8) { // halve
-    var temp = [];
-    this._storage.each(function(bucket) {
-      if (bucket !== undefined) {
-        temp = temp.concat(bucket);
-      }
-    });
-    this._limit /= 2;
-    this._storage = LimitedArray(this._limit);
-    for (var i = 0; i < temp.length; i++) {
-      this.insertResize(temp[i][0], temp[i][1]);
-    }
   }
 };
 
