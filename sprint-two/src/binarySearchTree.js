@@ -114,7 +114,7 @@ binaryTreeMethods.breadthFirstLog = function (callback) { // non-recursive versi
     if (c.right) {
       q.push(c.right);
     }
-  } while(q.length);
+  } while (q.length);
 };
 
 /*
