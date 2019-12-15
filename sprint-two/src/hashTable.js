@@ -85,9 +85,7 @@ HashTable.prototype.checkAndResize = function() {
       this.insertResize(temp[i][0], temp[i][1]);
     }
   }
-  console.log('bucket count ', amountVal);
-  console.log('percent ', amountVal/this._limit);
-  console.log('limit ', this._limit);
+
   if (amountVal / this._limit < 0.25 && this._limit > 8) {
     var temp = [];
     this._storage.each(function(bucket){
