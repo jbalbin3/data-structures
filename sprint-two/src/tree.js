@@ -37,7 +37,20 @@ treeMethods.contains = function(target) { // O(n) linear time complexity
   return isFound;
 };
 
-
+treeMethods.traverse = function(callback) {
+  var getNode = function(node) {
+    callback(node.value);
+    if(node.children.length){
+      node.children.forEach(function(child) {
+        callback(child.value);
+        if(child.children.length) {
+          getNode(child);
+        }
+      });
+    }
+  };
+  getNode(this);
+};
 
 /*
  * Complexity: What is the time complexity of the above functions?

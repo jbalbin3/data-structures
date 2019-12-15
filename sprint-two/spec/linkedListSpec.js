@@ -52,4 +52,12 @@ describe('linkedList', function() {
   });
 
   // add more tests here to test the functionality of linkedList
+  it('head and tail should be equal when there is one node', function() {
+    linkedList.addToTail(4);
+    expect(linkedList.tail.value).to.equal(linkedList.head.value);
+    linkedList.addToTail(5);
+    linkedList.removeHead();
+    expect(linkedList.tail.value).to.equal(linkedList.head.value);
+  });
+
 });

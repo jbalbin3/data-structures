@@ -61,6 +61,15 @@ Graph.prototype.forEachNode = function(cb) { // O(n) linear time complexity
   }
 };
 
+Graph.prototype.countEdges = function(v) {
+  var result = 0;
+  for (var i = 0; i < this.e.length; i++) {
+    if (this.e[i].includes(v)) {
+      result++;
+    }
+  }
+  return result;
+};
 /*
  * Complexity: What is the time complexity of the above functions?
  */

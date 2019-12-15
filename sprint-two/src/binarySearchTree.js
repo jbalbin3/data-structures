@@ -73,10 +73,37 @@ binaryTreeMethods.depthFirstLog = function(callback) {
     if(node.right !== null) {
       findNode(node.right);
     }
-
   };
   findNode(this);
 };
+
+binaryTreeMethods.breadthFirstLog = function(callback) {
+  // jumpRun func(node)
+  // store node.value (or just run the callback)
+  // check left if exists
+  // push node.left to jumpArray
+  // check right if exists
+  // push node.right to jumpArray [e , g, l, a, c]
+  // shift jumpArray = new node   (e = node)
+  // call jumpStore func with input of new node
+  // jumpRun(this)
+
+  var jumpArr = [];
+  var jumpRun = function(node) {
+    callback(node.value);
+    if(node.left !== null) {
+      jumpArr.push(node.left);
+    }
+    if(node.right !== null) {
+      jumpArr.push(node.right);
+    }
+    if(jumpArr.length) {
+      jumpRun(jumpArr.shift());
+    }
+  };
+  jumpRun(this);
+};
+
 /*
 var BinarySearchTree = function(root) {
   var btree = new bTree(root);
