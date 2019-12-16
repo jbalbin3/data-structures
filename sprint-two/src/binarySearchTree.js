@@ -10,7 +10,7 @@ var BinarySearchTree = function (value) {
 
 var binaryTreeMethods = {};
 
-binaryTreeMethods.insert = function (value) {
+binaryTreeMethods.insert2 = function (value) { // recursive version
   var setNode = function (node) {
     if (value > node.value) {
       if (node.right === null) {
@@ -37,11 +37,40 @@ binaryTreeMethods.insert = function (value) {
   setNode(this);
 };
 
-binaryTreeMethods.contains = function (value) {
+binaryTreeMethods.insert = function (value) { // non-recursive version
+  var newNode = {
+    value: value,
+    left: null,
+    right: null
+  };
+  var que = [this];
+  do {
+    var cur = que.shift();
+    if (value < cur.value) {
+      if (cur.left) {
+        que.push(cur.left);
+      } else {
+        cur.left = newNode;
+        return;
+      }
+    } else {
+      if (cur.right) {
+        que.push(cur.right);
+      } else {
+        cur.right = newNode;
+        return;
+      }
+    }
+  } while (que.length);
+};
+
+binaryTreeMethods.contains2 = function (value) { // recursive version
   var findNode = function (node) {
-    if (node.value === value) { return true; }
+    if (node.value === value) {
+      return true;
+    }
     if (value > node.value) {
-      if (node.right === null) {
+      if (!node.right) {
         return false;
       } else {
         if (node.right.value === value) {
@@ -50,7 +79,7 @@ binaryTreeMethods.contains = function (value) {
         return findNode(node.right);
       }
     } else {
-      if (node.left === null) {
+      if (!node.left) {
         return false;
       } else {
         if (node.left.value === value) {
@@ -63,7 +92,24 @@ binaryTreeMethods.contains = function (value) {
   return findNode(this);
 };
 
-binaryTreeMethods.depthFirstLog = function (callback) {
+binaryTreeMethods.contains = function (value) { // non-recursive version
+  var que = [this];
+  do {
+    var cur = que.shift();
+    if (cur.value === value) {
+      return true;
+    }
+    if (cur.left) {
+      que.push(cur.left);
+    }
+    if (cur.right) {
+      que.push(cur.right);
+    }
+  } while (que.length);
+  return false;
+};
+
+binaryTreeMethods.depthFirstLog2 = function (callback) { // recursive version
   if (!callback) { callback = function (e) { return e; }; }
   var findNode = function (node) {
     callback(node.value);
@@ -77,6 +123,23 @@ binaryTreeMethods.depthFirstLog = function (callback) {
   findNode(this);
 };
 
+binaryTreeMethods.depthFirstLog = function (callback) { // non-recursive version
+  var stack = [];
+  cur = this;
+  do {
+    while (cur) {
+      stack.push(cur);
+      callback(cur.value);
+      cur = cur.left;
+    }
+    if (cur || stack.length) {
+      cur = stack.pop().right;
+    } else {
+      return;
+    }
+  } while (true);
+};
+
 binaryTreeMethods.breadthFirstLog2 = function (callback) { // recursive version
   // jumpRun func(node)
   // store node.value (or just run the callback)
@@ -87,34 +150,34 @@ binaryTreeMethods.breadthFirstLog2 = function (callback) { // recursive version
   // shift jumpArray = new node   (e = node)
   // call jumpStore func with input of new node
   // jumpRun(this)
-  var q = [];
-  var runQ = function (n) {
-    callback(n.value);
-    if (n.left) {
-      q.push(n.left);
+  var que = [];
+  var runQue = function (node) {
+    callback(node.value);
+    if (node.left) {
+      que.push(node.left);
     }
-    if (n.right) {
-      q.push(n.right);
+    if (node.right) {
+      que.push(node.right);
     }
-    if (q.length) {
-      runQ(q.shift());
+    if (que.length) {
+      runQue(que.shift());
     }
   };
-  runQ(this);
+  runQue(this);
 };
 
 binaryTreeMethods.breadthFirstLog = function (callback) { // non-recursive version
-  var q = [this];
+  var que = [this];
   do {
-    var c = q.shift();
-    callback(c.value);
-    if (c.left) {
-      q.push(c.left);
+    var cur = que.shift();
+    callback(cur.value);
+    if (cur.left) {
+      que.push(cur.left);
     }
-    if (c.right) {
-      q.push(c.right);
+    if (cur.right) {
+      que.push(cur.right);
     }
-  } while (q.length);
+  } while (que.length);
 };
 
 /*
