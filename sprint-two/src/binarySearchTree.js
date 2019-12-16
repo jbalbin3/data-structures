@@ -128,8 +128,8 @@ binaryTreeMethods.depthFirstLog = function (callback) { // non-recursive version
   cur = this;
   do {
     while (cur) {
-      stack.push(cur);
       callback(cur.value);
+      stack.push(cur);
       cur = cur.left;
     }
     if (cur || stack.length) {
@@ -141,15 +141,15 @@ binaryTreeMethods.depthFirstLog = function (callback) { // non-recursive version
 };
 
 binaryTreeMethods.breadthFirstLog2 = function (callback) { // recursive version
-  // jumpRun func(node)
+  // runQue func(node)
   // store node.value (or just run the callback)
   // check left if exists
-  // push node.left to jumpArray
+  // push node.left to que
   // check right if exists
-  // push node.right to jumpArray [e , g, l, a, c]
-  // shift jumpArray = new node   (e = node)
-  // call jumpStore func with input of new node
-  // jumpRun(this)
+  // push node.right to que [e , g, l, a, c]
+  // shift que = new node   (e = node)
+  // call runQue func with input of new node
+  // runQue(this)
   var que = [];
   var runQue = function (node) {
     callback(node.value);
